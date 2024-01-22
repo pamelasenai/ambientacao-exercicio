@@ -1,0 +1,4 @@
+1 - [X] café
+2 - [ ] pão
+3 - [ ] arroz
+4 - [X] leite
