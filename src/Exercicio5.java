@@ -12,7 +12,7 @@ public class Exercicio5 {
         System.out.print("Informe o seu nome: ");
         pessoa.nome = scanner.next();
         System.out.print("Informe sua idade: ");
-        pessoa.idade = scanner.nextInt();
+        pessoa.idade = scanner.nextShort();
         System.out.print("Informe sua altura em metros (ex: 1,62): ");
         pessoa.altura = scannerAltura.nextDouble();
         System.out.print("Informe seu peso em kg (ex: 60,5): ");
@@ -31,20 +31,20 @@ public class Exercicio5 {
     }
 
     public static void classificarImc(double imc){
-        String message = "";
+        String mensagem = "";
         if (imc < 18.5) {
-            message = "Abaixo do peso";
+            mensagem = "Abaixo do peso";
         } else if (imc >= 18.5 && imc < 25) {
-            message = "Peso normal";
+            mensagem = "Peso normal";
         } else if (imc >= 25 && imc < 30) {
-            message = "Sobrepeso";
+            mensagem = "Sobrepeso";
         } else if (imc >= 30 && imc < 35) {
-            message = "Obesidade Grau I";
+            mensagem = "Obesidade Grau I";
         } else if (imc >= 35 && imc < 40) {
-            message = "Obesidade Grau II";
+            mensagem = "Obesidade Grau II";
         } else if (imc >= 40) {
-            message = "Obesidade Grau III (ou mórbida)";
+            mensagem = "Obesidade Grau III (ou mórbida)";
         }
-        System.out.println("A classificação do seu IMC é: " + message);
+        System.out.println("A classificação do seu IMC é: " + mensagem);
     }
 }

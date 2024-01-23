@@ -7,11 +7,8 @@ public class Calculadora {
 
     public void iniciarCalculadora() {
         Scanner scanner = new Scanner(System.in);
-        Integer[] operacoes = new Integer[]{1, 2, 3, 4};
-        List<Integer> listaOperacoes = Arrays.asList(operacoes);
+        final List<Integer> OPERACOES = Arrays.asList(1, 2, 3, 4);
         int operacao;
-
-
 
         System.out.print("Informe um número para iniciar sua operação: ");
         total = scanner.nextInt();
@@ -40,7 +37,7 @@ public class Calculadora {
                     System.out.println("Operação selecionada é invalida!");
                     System.out.println("TOTAL: " + total);
             }
-        } while (listaOperacoes.contains(operacao));
+        } while (OPERACOES.contains(operacao));
     }
 
     private  void adicionar(Integer numero1){
@@ -75,8 +72,6 @@ public class Calculadora {
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Informe um número para seguir com sua operação: ");
-        int numero = scanner.nextInt();
-
-        return numero;
+        return scanner.nextInt();
     }
 }

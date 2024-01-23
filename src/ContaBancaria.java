@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class ContaBancaria {
     private ArrayList<Conta> contasExistentes = new ArrayList<>();
@@ -74,7 +73,7 @@ public class ContaBancaria {
         }
 
         if (valorTransferencia > saldoAtual) {
-            System.out.println("Você não possui saldo disponível para esta transferencia no valor de " + valorTransferencia);
+            System.out.println("Você não possui saldo disponível para esta transferência no valor de " + valorTransferencia);
             this.consultarSaldo(nome);
             return;
         }
@@ -130,7 +129,7 @@ public class ContaBancaria {
     }
 
     public void criarMultiplasContas(List<String> nomes) {
-        System.out.println("Você entrou no modo de criação de multiplas contas.");
+        System.out.println("Você entrou no modo de criação de múltiplas contas.");
 
         for (String nome : nomes) {
             this.criarConta(nome);

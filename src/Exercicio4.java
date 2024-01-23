@@ -7,32 +7,32 @@ public class Exercicio4 {
 
         ContaBancaria contaBancaria = new ContaBancaria();
 
-        String nome = "Pamela";
-        String nomeSemConta = "Ana";
-        String nomeDestinatario = "Rafael";
-        List<String> nomes = Arrays.asList("Rafael", "Leonardo");
-        double valorDeposito = 300;
-        double valorSaque = 5;
-        double valorSaqueComErro = 500000;
-        double valorTransferencia = 100;
+        final String NOME = "Pamela";
+        final String NOME_SEM_CONTA = "Ana";
+        final String DESTINATARIO = "Rafael";
+        final List<String> NOMES = Arrays.asList("Rafael", "Leonardo");
+        final double VALOR_DEPOSITO = 300;
+        final double VALOR_SAQUE = 5;
+        final double VALOR_SAQUE_ERRO = 500000;
+        final double VALOR_TRANSFERENCIA = 100;
 
         System.out.println("Criando contas...");
-        contaBancaria.criarConta(nome);
-        contaBancaria.criarMultiplasContas(nomes);
+        contaBancaria.criarConta(NOME);
+        contaBancaria.criarMultiplasContas(NOMES);
         System.out.println("\nChecando se conta foi criada...");
-        contaBancaria.verificarPossiuConta(nome);
-        contaBancaria.verificarPossiuConta(nomeSemConta);
+        contaBancaria.verificarPossiuConta(NOME);
+        contaBancaria.verificarPossiuConta(NOME_SEM_CONTA);
         System.out.println("\nRealizar deposito...");
-        contaBancaria.realizarDeposito(nome, valorDeposito);
-        contaBancaria.realizarDeposito(nome, valorDeposito);
+        contaBancaria.realizarDeposito(NOME, VALOR_DEPOSITO);
+        contaBancaria.realizarDeposito(NOME, VALOR_DEPOSITO);
         System.out.println("\nRealizar saque...");
-        contaBancaria.realizarSaque(nome, valorSaque);
-        contaBancaria.realizarSaque(nome, valorSaqueComErro);
-        System.out.println("\nRealizar transferencia...");
-        contaBancaria.realizarTransferencia(nome, nomeDestinatario, valorTransferencia);
-        contaBancaria.realizarTransferencia(nome, nomeDestinatario, valorSaqueComErro);
+        contaBancaria.realizarSaque(NOME, VALOR_SAQUE);
+        contaBancaria.realizarSaque(NOME, VALOR_SAQUE_ERRO);
+        System.out.println("\nRealizar transferência...");
+        contaBancaria.realizarTransferencia(NOME, DESTINATARIO, VALOR_TRANSFERENCIA);
+        contaBancaria.realizarTransferencia(NOME, DESTINATARIO, VALOR_SAQUE_ERRO);
         System.out.println("\nConsultar saldo...");
-        contaBancaria.consultarSaldo(nome);
+        contaBancaria.consultarSaldo(NOME);
         System.out.println("\nFIM...");
     }
 }

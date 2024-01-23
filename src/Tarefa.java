@@ -33,7 +33,7 @@ public class Tarefa {
         String continuar;
 
         do {
-            System.out.print("Informe o número da tarefa a ser excluida: ");
+            System.out.print("Informe o número da tarefa a ser excluída: ");
             int tarefa = scanner.nextInt();
             int indexTarefa = tarefa - 1;
 
@@ -55,7 +55,7 @@ public class Tarefa {
         Scanner scanner2 = new Scanner(System.in);
         String continuar;
         do {
-            System.out.print("Informe a tarefa que foi concluida: ");
+            System.out.print("Informe a tarefa que foi concluída: ");
             int tarefa = scanner.nextInt();
             int indexTarefa = tarefa - 1;
 
@@ -86,11 +86,11 @@ public class Tarefa {
         tarefasPendentes.removeIf( s -> !s.contains("[ ]"));
         tarefasconcluidas.removeIf( s -> !s.contains("[X]"));
 
-        System.out.print("Deseja filtrar as tarefas por concluidas ou pendentes? (concluidas / pendentes) ");
+        System.out.print("Deseja filtrar as tarefas por concluídas ou pendentes? (concluídas / pendentes) ");
         String filtro = scanner.next();
 
         switch (filtro){
-            case "concluidas":
+            case "concluídas":
                 exibirTarefas(tarefasconcluidas);
                 break;
             case "pendentes":
@@ -120,8 +120,7 @@ public class Tarefa {
             String texto = "";
             for (int i = 0; i != listaTarefas.size(); i++){
                 String item = i+1 + " - " + listaTarefas.get(i) + "\n";
-                String concat = texto.concat(item);
-                texto = concat;
+                texto = texto.concat(item);
             }
             Files.writeString(path, texto);
             System.out.println("Arquivo criado com sucesso!");
@@ -160,7 +159,7 @@ public class Tarefa {
                     "5 - salvar lista de tarefas em arquivo txt \n" +
                     "Informe qual ação você deseja executar: "
             );
-            int acao = scanner.nextInt();
+            byte acao = scanner.nextByte();
             switch (acao) {
                 case 1:
                     this.adicionar();

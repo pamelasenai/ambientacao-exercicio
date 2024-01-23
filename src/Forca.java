@@ -1,14 +1,13 @@
 import java.util.*;
 
 public class Forca {
-    private int errosAcumulados = 0;
-    private int maximoErros = 6;
-    private final List<String> listaPalavras = Arrays.asList("tecnologia", "computador", "programacao", "desenvolvedor");
+    private byte errosAcumulados = 0;
+    private final byte MAXIMOERROS = 6;
+    private List<String> listaPalavras = Arrays.asList("tecnologia", "computador", "programacao", "desenvolvedor");
     private ArrayList<String> palavraOcultada = new ArrayList<>();
     private String palavraEscolhida = this.obterPalavraAleatoria();
     private ArrayList<String> letrasEscolhidas = new ArrayList<>();
     private boolean venceu = false;
-    private String novaPartida = "";
 
     public void adicionarPalavras(String novaPalavra) {
         listaPalavras.add(novaPalavra);
@@ -28,7 +27,7 @@ public class Forca {
     private void verificarLetra(String letra) {
         this.letrasEscolhidas.add(letra);
         if (!palavraEscolhida.contains(letra)){
-            errosAcumulados = errosAcumulados + 1;
+            errosAcumulados = (byte) (errosAcumulados + 1);
             return;
         }
         List<String> arrayPalavraEscolhida = Arrays.asList(this.palavraEscolhida.split(""));
@@ -38,8 +37,7 @@ public class Forca {
                 this.palavraOcultada.set(i, letra.toUpperCase() + " ");
             };
         }
-        boolean contains = !this.palavraOcultada.contains("_ ");
-        this.venceu = contains;
+        this.venceu = !this.palavraOcultada.contains("_ ");
     }
 
     private void obterForca(){
@@ -65,11 +63,9 @@ public class Forca {
             default:
                 obterForcaErro0();
         }
-        if (this.errosAcumulados == this.maximoErros) {
-            Scanner scanner = new Scanner(System.in);
+        if (this.errosAcumulados == this.MAXIMOERROS) {
             System.out.println(this.palavraEscolhida.toUpperCase());
             System.out.println("FORCA! Você perdeu.");
-            this.iniciarNovaPartida();
         } else {
             System.out.println(String.join("", this.palavraOcultada));
         }
@@ -164,24 +160,24 @@ public class Forca {
                 System.out.println("PARABÉNS, você venceu!!");
                 break;
             }
-            System.out.println("\nMáximo de erros possíveis: " + this.maximoErros);
+            System.out.println("\nMáximo de erros possíveis: " + this.MAXIMOERROS);
             System.out.println("Erros acumulados: " + this.errosAcumulados);
             System.out.print("\nDigite uma letra para verificar se a palavra contém a letra: ");
             String letra = String.valueOf(scanner.next().toLowerCase().charAt(0));
             this.verificarLetra(letra);
-            if (this.errosAcumulados == this.maximoErros) {
+            if (this.errosAcumulados == this.MAXIMOERROS) {
                 this.obterForca();
             }
-        } while (this.errosAcumulados < this.maximoErros);
+        } while (this.errosAcumulados < this.MAXIMOERROS);
         this.iniciarNovaPartida();
     }
 
     private void iniciarNovaPartida() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Deseja jogar uma nova partida? (s / n) ");
-        this.novaPartida = scanner.next();
+        String novaPartida = scanner.next();
 
-        if(this.novaPartida.equals("s")) {
+        if(novaPartida.equals("s")) {
             this.errosAcumulados = 0;
             this.palavraOcultada = new ArrayList<>();
             this.letrasEscolhidas = new ArrayList<>();
