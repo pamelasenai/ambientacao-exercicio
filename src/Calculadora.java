@@ -6,72 +6,77 @@ public class Calculadora {
     private int total = 0;
 
     public void iniciarCalculadora() {
-        Scanner scanner = new Scanner(System.in);
+        Scanner entrada = new Scanner(System.in);
         final List<Integer> OPERACOES = Arrays.asList(1, 2, 3, 4);
-        int operacao;
+        int opcao;
 
-        System.out.print("Informe um número para iniciar sua operação: ");
-        total = scanner.nextInt();
+        System.out.print("Informe um número para iniciar seu calculo: ");
+        total = entrada.nextInt();
 
         do {
-            System.out.print("Informe a operação que você deseja usar (1 +, 2 -, 3 *, 4 /, 0 sair): ");
-            operacao = scanner.nextInt();
-            switch (operacao){
+            System.out.print(
+                    "Informe a operação que você deseja usar " +
+                    "(1- soma, 2- subtração, 3- multiplicação, 4- divisão, 0- SAIR): "
+            );
+            opcao = entrada.nextInt();
+
+            switch (opcao){
                 case  0:
                     System.out.println("TOTAL: " + total);
                     System.out.println("Calculadora finalizada...");
                     break;
                 case 1:
-                    adicionar(total);
+                    this.adicionar(total);
                     break;
                 case 2:
-                    subtrair(total);
+                    this.subtrair(total);
                     break;
                 case 3:
-                    multiplicar(total);
+                    this.multiplicar(total);
                     break;
                 case 4:
-                    dividir(total);
+                    this.dividir(total);
                     break;
                 default:
                     System.out.println("Operação selecionada é invalida!");
                     System.out.println("TOTAL: " + total);
             }
-        } while (OPERACOES.contains(operacao));
+        } while (OPERACOES.contains(opcao));
+        entrada.close();
     }
 
-    private  void adicionar(Integer numero1){
-        int numero2 = solicitarNumero();
+    private  void adicionar(Integer numeroInicial){
+        int numeroSolicitado = this.solicitarNumero();
 
-        total = numero1 + numero2;
-        System.out.println(numero1 + " + " + numero2 + " = " + total);
+        total = numeroInicial + numeroSolicitado;
+        System.out.println(numeroInicial + " + " + numeroSolicitado + " = " + total);
     }
 
-    private  void subtrair(Integer numero1){
-        int numero2 = solicitarNumero();
+    private  void subtrair(Integer numeroInicial){
+        int numeroSolicitado = this.solicitarNumero();
 
-        total = numero1 - numero2;
-        System.out.println(numero1 + " - " + numero2 + " = " + total);
+        total = numeroInicial - numeroSolicitado;
+        System.out.println(numeroInicial + " - " + numeroSolicitado + " = " + total);
     }
 
-    private  void multiplicar(Integer numero1){
-        int numero2 = solicitarNumero();
+    private  void multiplicar(Integer numeroInicial){
+        int numeroSolicitado = this.solicitarNumero();
 
-        total = numero1 * numero2;
-        System.out.println(numero1 + " * " + numero2 + " = " + total);
+        total = numeroInicial * numeroSolicitado;
+        System.out.println(numeroInicial + " * " + numeroSolicitado + " = " + total);
     }
 
-    private  void dividir(Integer numero1){
-        int numero2 = solicitarNumero();
+    private  void dividir(Integer numeroInicial){
+        int numeroSolicitado = this.solicitarNumero();
 
-        total = numero1 / numero2;
-        System.out.println(numero1 + " / " + numero2 + " = " + total);
+        total = numeroInicial / numeroSolicitado;
+        System.out.println(numeroInicial + " / " + numeroSolicitado + " = " + total);
     }
 
     private int solicitarNumero(){
-        Scanner scanner = new Scanner(System.in);
+        Scanner entrada = new Scanner(System.in);
 
-        System.out.print("Informe um número para seguir com sua operação: ");
-        return scanner.nextInt();
+        System.out.print("Informe um número para seguir com seu calculo: ");
+        return entrada.nextInt();
     }
 }

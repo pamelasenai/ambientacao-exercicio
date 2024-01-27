@@ -3,151 +3,87 @@ import java.util.*;
 public class Forca {
     private byte errosAcumulados = 0;
     private final byte MAXIMOERROS = 6;
-    private List<String> listaPalavras = Arrays.asList("tecnologia", "computador", "programacao", "desenvolvedor");
-    private ArrayList<String> palavraOcultada = new ArrayList<>();
+    private List<String> listaPalavras = new ArrayList<>();
+    private List<String> palavraOcultada = new ArrayList<>();
     private String palavraEscolhida = this.obterPalavraAleatoria();
-    private ArrayList<String> letrasEscolhidas = new ArrayList<>();
+    private List<String> letrasEscolhidas = new ArrayList<>();
     private boolean venceu = false;
 
     public void adicionarPalavras(String novaPalavra) {
         listaPalavras.add(novaPalavra);
-        System.out.println("Palavra adicionada com sucesso.");
+        System.out.println("Palavra " + novaPalavra.toUpperCase() + " adicionada a lista com sucesso.\n");
+    }
+
+    private void popularListaPalavras() {
+        listaPalavras.add("tecnologia");
+        listaPalavras.add("computador");
+        listaPalavras.add("programacao");
+        listaPalavras.add("desenvolvedor");
     }
 
     private String obterPalavraAleatoria() {
         Random random = new Random();
-        int indexAleatorio = random.nextInt(listaPalavras.size());
-        String palavra = listaPalavras.get(indexAleatorio);
+        this.popularListaPalavras();
+        int indexAleatorio = random.nextInt(this.listaPalavras.size());
+        String palavra = this.listaPalavras.get(indexAleatorio);
+
         for (int i = 0; i < palavra.length(); i++){
             this.palavraOcultada.add("_ ");
         }
+
         return palavra;
     }
 
     private void verificarLetra(String letra) {
         this.letrasEscolhidas.add(letra);
+
         if (!palavraEscolhida.contains(letra)){
-            errosAcumulados = (byte) (errosAcumulados + 1);
+            this.errosAcumulados = (byte) (this.errosAcumulados + 1);
             return;
         }
-        List<String> arrayPalavraEscolhida = Arrays.asList(this.palavraEscolhida.split(""));
 
+        List<String> arrayPalavraEscolhida = Arrays.asList(this.palavraEscolhida.split(""));
         for (int i = 0; i < palavraEscolhida.length(); i++){
             if (letra.equals(arrayPalavraEscolhida.get(i))) {
                 this.palavraOcultada.set(i, letra.toUpperCase() + " ");
-            };
+            }
         }
+
         this.venceu = !this.palavraOcultada.contains("_ ");
     }
 
     private void obterForca(){
-        switch (errosAcumulados){
-            case 1:
-                obterForcaErro1();
-                break;
-            case 2:
-                obterForcaErro2();
-                break;
-            case 3:
-                obterForcaErro3();
-                break;
-            case 4:
-                obterForcaErro4();
-                break;
-            case 5:
-                obterForcaErro5();
-                break;
-            case 6:
-                obterForcaErro6();
-                break;
-            default:
-                obterForcaErro0();
+        String linha1 = "\n";
+        String linha2 = "  ______\n";
+        String linha3 = " |      |\n";
+        String linha4 = this.errosAcumulados >= 1 ? " |      O \n" : " |\n";
+        String linha5 = " |\n";
+        String linha6 = " |\n";
+        String linha7 = "---   \n";
+        String letras = "Letras escolhidas: " + this.letrasEscolhidas;
+
+        if (this.errosAcumulados == 2){
+            linha5 = " |     /\n";
+        } else if (this.errosAcumulados == 3) {
+            linha5 = " |     /|\n";
+        } else if (this.errosAcumulados >= 4) {
+            linha5 = " |     /|\\ \n";
         }
+
+        if (this.errosAcumulados == 5) {
+            linha6 = " |     /\n";
+        } else if (this.errosAcumulados == 6) {
+            linha6 = " |     / \\ \n";
+        }
+
+        System.out.println( linha1 + linha2 + linha3 + linha4 + linha5 + linha6 + linha7 + letras);
+
         if (this.errosAcumulados == this.MAXIMOERROS) {
             System.out.println(this.palavraEscolhida.toUpperCase());
-            System.out.println("FORCA! Você perdeu.");
+            System.out.println("\nFORCA! Você perdeu.");
         } else {
             System.out.println(String.join("", this.palavraOcultada));
         }
-    }
-
-    private void obterForcaErro0() {
-        System.out.println(
-                "  ______\n" +
-                " |      |\n" +
-                " |\n" +
-                " |\n" +
-                " |\n" +
-                "---   \n" +
-                "Letras escolhidas: " + this.letrasEscolhidas
-        );
-    }
-    private void obterForcaErro1() {
-        System.out.println(
-                "  ______\n" +
-                " |      |\n" +
-                " |      O \n" +
-                " |\n" +
-                " |\n" +
-                "---   \n" +
-                "Letras escolhidas: " + this.letrasEscolhidas
-        );
-    }
-
-    private void obterForcaErro2() {
-        System.out.println(
-                "  ______\n" +
-                " |      |\n" +
-                " |      O \n" +
-                " |     /\n" +
-                " |\n" +
-                "---   \n" +
-                "Letras escolhidas: " + this.letrasEscolhidas
-        );
-    }
-    private void obterForcaErro3() {
-        System.out.println(
-                "  ______\n" +
-                " |      |\n" +
-                " |      O \n" +
-                " |     /|\n" +
-                " |\n" +
-                "---   \n" +
-                "Letras escolhidas: " + this.letrasEscolhidas
-        );
-    }
-    private void obterForcaErro4() {
-        System.out.println(
-                "  ______\n" +
-                " |      |\n" +
-                " |      O \n" +
-                " |     /|\\ \n" +
-                " |\n" +
-                "---   \n" +
-                "Letras escolhidas: " + this.letrasEscolhidas
-        );
-    }
-    private void obterForcaErro5() {
-        System.out.println(
-                "  ______\n" +
-                " |      |\n" +
-                " |      O \n" +
-                " |     /|\\ \n" +
-                " |     /\n" +
-                "---   \n" +
-                "Letras escolhidas: " + this.letrasEscolhidas
-        );
-    }
-    private void obterForcaErro6() {
-        System.out.println(
-                "  ______\n" +
-                " |      |\n" +
-                " |      O \n" +
-                " |     /|\\ \n" +
-                " |     / \\ \n" +
-                "--- \n" +
-                "Letras escolhidas: " + this.letrasEscolhidas
-        );
     }
 
     public void iniciarJogo() {
@@ -174,7 +110,7 @@ public class Forca {
 
     private void iniciarNovaPartida() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Deseja jogar uma nova partida? (s / n) ");
+        System.out.print("\nDeseja jogar uma nova partida? (s / n) ");
         String novaPartida = scanner.next();
 
         if(novaPartida.equals("s")) {
@@ -184,6 +120,6 @@ public class Forca {
             this.venceu = false;
             this.palavraEscolhida = this.obterPalavraAleatoria();
             this.iniciarJogo();
-        };
+        }
     }
 }

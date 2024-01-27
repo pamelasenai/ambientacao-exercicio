@@ -5,106 +5,107 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Tarefa {
-    private ArrayList<String> listaTarefas = new ArrayList<>();
+    private List<String> listaTarefas = new ArrayList<>();
+    private final Scanner entrada = new Scanner(System.in);
 
     private void adicionar(){
-        Scanner scanner = new Scanner(System.in);
-        Scanner scanner2 = new Scanner(System.in);
-        String continuar;
+        String tarefa;
 
         do {
-            System.out.print("Digite uma nova tarefa: ");
-            String tarefa = scanner.nextLine();
-            String novaTarefa = "[ ] " + tarefa;
-            listaTarefas.add(novaTarefa);
+            System.out.print("\nDigite uma nova tarefa ou N para sair: ");
+            tarefa = entrada.nextLine();
+            if (!tarefa.equals("n")){
+                String novaTarefa = "[ ] " + tarefa;
+                listaTarefas.add(novaTarefa);
+            }
+        } while (!tarefa.equals("n"));
 
-            System.out.print("Deseja adicionar uma nova tarefa? (s / n) ");
-            continuar = scanner2.next();
-        } while (continuar.equals("s"));
         exibirTodasTarefas();
     }
 
     private void remover(){
-        Scanner scanner = new Scanner(System.in);
-        Scanner scanner2 = new Scanner(System.in);
-        String continuar;
+        int tarefa;
 
         do {
-            System.out.print("Informe o número da tarefa a ser excluída: ");
-            int tarefa = scanner.nextInt();
-            int indexTarefa = tarefa - 1;
+            System.out.print("\nInforme o número da tarefa a ser excluída ou 0 para sair: ");
+            tarefa = entrada.nextInt();
+            int indiceTarefa = tarefa - 1;
 
-            if (indexTarefa < 0 || indexTarefa > listaTarefas.size()){
-                System.out.println("Item inexistente!");
-                break;
+            if (indiceTarefa < 0 || indiceTarefa > listaTarefas.size()){
+                System.out.println("\nItem inexistente!");
+                continue;
             }
 
-            listaTarefas.remove(indexTarefa);
+            if (tarefa != 0){
+                listaTarefas.remove(indiceTarefa);
+                System.out.println("\nTarefa na posição " + tarefa + " removida da lista!");
+                exibirTodasTarefas();
+            }
+        } while (tarefa != 0);
 
-            System.out.print("Deseja excluir outra tarefa? (s / n) ");
-            continuar = scanner2.next();
-        } while (continuar.equals("s"));
         exibirTodasTarefas();
     }
 
     private void concluir(){
-        Scanner scanner = new Scanner(System.in);
-        Scanner scanner2 = new Scanner(System.in);
-        String continuar;
-        do {
-            System.out.print("Informe a tarefa que foi concluída: ");
-            int tarefa = scanner.nextInt();
-            int indexTarefa = tarefa - 1;
+        int tarefa;
 
-            if (indexTarefa < 0 || indexTarefa > listaTarefas.size()){
-                System.out.println("Item inexistente!");
+        do {
+            System.out.print("\nInforme a tarefa a ser concluída ou 0 para sair: ");
+            tarefa = entrada.nextInt();
+            int indiceTarefa = tarefa - 1;
+
+            if (indiceTarefa < 0 || indiceTarefa > listaTarefas.size()){
+                System.out.println("\nItem inexistente!");
                 break;
             }
 
-            String tarefaConcluida = listaTarefas.get(indexTarefa).replace("[ ] ", "[X] ");
-            listaTarefas.set(indexTarefa, tarefaConcluida);
+            if (tarefa != 0) {
+                String tarefaConcluida = listaTarefas.get(indiceTarefa).replace("[ ] ", "[X] ");
+                listaTarefas.set(indiceTarefa, tarefaConcluida);
+                System.out.println("\nTarefa na posição " + tarefa + " concluida.");
+                exibirTodasTarefas();
+            }
+        } while (tarefa != 0);
 
-            System.out.print("Deseja concluir outra tarefa? (s / n) ");
-            continuar = scanner2.next();
-        } while (continuar.equals("s"));
         exibirTodasTarefas();
     }
 
     private void exibirTodasTarefas(){
-        System.out.println("Sua lista de tarefas no momento está assim: ");
-        exibirTarefas(listaTarefas);
+        System.out.println("\nSua lista de tarefas no momento está assim: ");
+        for(int contador = 0; contador < this.listaTarefas.size(); contador ++){
+            String texto = (contador + 1) + "- "+ this.listaTarefas.get(contador);
+            System.out.println(texto);
+        }
     }
 
     private void filtrarTarefas(){
-        Scanner scanner = new Scanner(System.in);
-        ArrayList<String> tarefasPendentes = new ArrayList<>(listaTarefas);
-        ArrayList<String> tarefasconcluidas = new ArrayList<>(listaTarefas);
+        List<String> tarefas = new ArrayList<>(listaTarefas);
 
-        tarefasPendentes.removeIf( s -> !s.contains("[ ]"));
-        tarefasconcluidas.removeIf( s -> !s.contains("[X]"));
-
-        System.out.print("Deseja filtrar as tarefas por concluídas ou pendentes? (concluídas / pendentes) ");
-        String filtro = scanner.next();
+        System.out.print("\nDeseja filtrar as tarefas por concluídas ou pendentes? (1 - concluídas / 2 - pendentes) ");
+        int filtro = entrada.nextInt();
 
         switch (filtro){
-            case "concluídas":
-                exibirTarefas(tarefasconcluidas);
+            case 1:
+                tarefas.removeIf( tarefa -> !tarefa.contains("[X]"));
+                exibirTarefas(tarefas);
                 break;
-            case "pendentes":
-                exibirTarefas(tarefasPendentes);
+            case 2:
+                tarefas.removeIf( tarefa -> !tarefa.contains("[ ]"));
+                exibirTarefas(tarefas);
                 break;
             default:
-                System.out.println("Filtro invalido.");
+                System.out.println("\nFiltro invalido.");
                 exibirTodasTarefas();
         }
     }
 
-    private void exibirTarefas(ArrayList<String> lista){
-        for (int i = 0; i != lista.size(); i++){
-            System.out.println( i+1 + " - " + lista.get(i));
+    private void exibirTarefas(List<String> lista){
+        for (String item : lista){
+            System.out.println(item);
         }
     }
 
@@ -118,15 +119,14 @@ public class Tarefa {
                 Files.createFile(path);
             }
             String texto = "";
-            for (int i = 0; i != listaTarefas.size(); i++){
-                String item = i+1 + " - " + listaTarefas.get(i) + "\n";
-                texto = texto.concat(item);
+            for (String tarefa : listaTarefas){
+                texto = texto.concat(tarefa + "\n");
             }
             Files.writeString(path, texto);
-            System.out.println("Arquivo criado com sucesso!");
+            System.out.println("\nArquivo criado com sucesso!");
             abrirArquivo(path.toFile());
         } catch (IOException e){
-            System.err.println("Erro ao criar e abrir o arquivo: " + e.getMessage());
+            System.err.println("\nErro ao criar e abrir o arquivo: " + e.getMessage());
         }
     }
 
@@ -136,30 +136,30 @@ public class Tarefa {
             try {
                 desktop.open(arquivo);
             } catch (IOException e) {
-                System.err.println("Erro ao abrir o arquivo: " + e.getMessage());
+                System.err.println("\nErro ao abrir o arquivo: " + e.getMessage());
             }
         } else {
-            System.out.println("A abertura automática de arquivos não é suportada neste ambiente.");
+            System.out.println("\nA abertura automática de arquivos não é suportada neste ambiente.");
         }
     }
 
     public void iniciarToDoList() {
-        Scanner scanner = new Scanner(System.in);
-        Scanner scanner2 = new Scanner(System.in);
         String continuar;
         do {
             this.exibirTodasTarefas();
-
             System.out.print(
-                    "Ações permitidas\n" +
-                    "1 - adicionar tarefa \n" +
-                    "2 - remover tarefa \n" +
-                    "3 - concluir tarefa \n" +
-                    "4 - filtrar tarefa \n" +
-                    "5 - salvar lista de tarefas em arquivo txt \n" +
-                    "Informe qual ação você deseja executar: "
+                    "\n----------------------------------------------\n" +
+                    "| Ações permitidas                           |\n" +
+                    "| 1 - adicionar tarefa                       |\n" +
+                    "| 2 - remover tarefa                         |\n" +
+                    "| 3 - concluir tarefa                        |\n" +
+                    "| 4 - filtrar tarefa                         |\n" +
+                    "| 5 - salvar lista de tarefas em arquivo txt |\n" +
+                    "---------------------------------------------\n" +
+                    " \nInforme qual ação você deseja executar: "
             );
-            byte acao = scanner.nextByte();
+            byte acao = entrada.nextByte();
+
             switch (acao) {
                 case 1:
                     this.adicionar();
@@ -177,11 +177,13 @@ public class Tarefa {
                     this.salvarArquivo();
                     break;
                 default:
-                    System.out.println("Opção invalida.");
+                    System.out.println("\nOpção invalida.");
             }
 
-            System.out.print("Deseja fechar o programa? (s / n) ");
-            continuar = scanner2.next();
+            System.out.print("\nDeseja fechar o programa? (s / n) ");
+            continuar = entrada.next();
         } while (continuar.equals("n"));
+
+        entrada.close();
     }
 }

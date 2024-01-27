@@ -1,79 +1,83 @@
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ContaBancaria {
-    private ArrayList<Conta> contasExistentes = new ArrayList<>();
-    public void realizarDeposito(String nome, double valorDeposito) {
-        boolean possuiConta = this.possuiContaComNome(nome);
+    private final List<Conta> contasExistentes = new ArrayList<>();
+    public void realizarDeposito(String nome, BigDecimal valorDeposito) {
+        boolean possuiConta = this.ehCliente(nome);
 
         if (!possuiConta) {
-            System.out.println("Não encontramos uma conta em nome de " + nome);
+            System.out.println("Não encontramos uma conta em nome de: " + nome);
             return;
         }
 
-        if (valorDeposito < 0) {
-            System.out.println("Não é possível realizar esta operação.");
+        if (valorDeposito.compareTo(BigDecimal.ZERO) <= 0) {
+            System.out.println("Não é possível realizar deposito para este valor: R$" + valorDeposito);
             return;
         }
 
         this.realizarDepositoPorNome(nome, valorDeposito);
         this.consultarSaldo(nome);
-    };
+    }
 
-    public void realizarSaque(String nome, double valorSaque) {
-        boolean possuiConta = this.possuiContaComNome(nome);
-        double saldoAtual = this.buscarSaldoAtual(nome);
+    public void realizarSaque(String nome, BigDecimal valorSaque) {
+        boolean possuiConta = this.ehCliente(nome);
+        BigDecimal saldoAtual = this.buscarSaldoAtual(nome);
 
         if (!possuiConta) {
-            System.out.println("Não encontramos uma conta para a pessoa informada.");
+            System.out.println("Não encontramos uma conta em nome de: " + nome);
             return;
         }
 
-        if (valorSaque > saldoAtual) {
-            System.out.println("Você não possui saldo disponível para este saque no valor de " + valorSaque);
+        if (valorSaque.compareTo(saldoAtual) > 0) {
+            System.out.println("Você não possui saldo disponível para este saque no valor de: R$" + valorSaque);
             this.consultarSaldo(nome);
             return;
         }
 
         this.realizarSaquePorNome(nome, valorSaque);
         this.consultarSaldo(nome);
-    };
-
-
-    private void realizarSaquePorNome(String nome, double valorSaque){
-        for (Conta conta : contasExistentes) {
-            if (conta != null && conta.nome.equals(nome)) {
-                conta.saldoAtual = conta.saldoAtual - valorSaque;
-            }
-        }
-        System.out.println("Saque realizado com sucesso da conta em nome de " + nome + " no valor de " + valorSaque);
     }
 
-    private void realizarDepositoPorNome(String nome, double valorDeposito){
+
+    private void realizarSaquePorNome(String nome, BigDecimal valorSaque){
         for (Conta conta : contasExistentes) {
-            if (conta != null && conta.nome.equals(nome)) {
-                conta.saldoAtual = conta.saldoAtual + valorDeposito;
+            if (conta.nome.equals(nome)) {
+                conta.saldoAtual = conta.saldoAtual.subtract(valorSaque);
             }
         }
-        System.out.println("Deposito realizado com sucesso para " + nome + " no valor de " + valorDeposito);
+        System.out.println("Saque realizado com sucesso da conta em nome de " + nome + " no valor de R$" + valorSaque);
     }
 
-    public void realizarTransferencia(String nome, String nomeDestinatario, double valorTransferencia) {
-        boolean possuiConta = this.possuiContaComNome(nome);
-        double saldoAtual = this.buscarSaldoAtual(nome);
+    private void realizarDepositoPorNome(String nome, BigDecimal valorDeposito){
+        for (Conta conta : contasExistentes) {
+            if (conta.nome.equals(nome)) {
+                conta.saldoAtual = conta.saldoAtual.add(valorDeposito);
+            }
+        }
+        System.out.println("Deposito realizado com sucesso para " + nome + " no valor de R$" + valorDeposito);
+    }
+
+    public void realizarTransferencia(String nome, String nomeDestinatario, BigDecimal valorTransferencia) {
+        boolean possuiConta = this.ehCliente(nome);
+        BigDecimal saldoAtual = this.buscarSaldoAtual(nome);
         if (!possuiConta) {
             System.out.println("Não encontramos uma conta em nome de " + nome);
             return;
         }
 
-        boolean destinatarioPossuiConta = this.possuiContaComNome(nomeDestinatario);
+        boolean destinatarioPossuiConta = this.ehCliente(nomeDestinatario);
         if (!destinatarioPossuiConta) {
             System.out.println("Não encontramos uma conta para o destinatário " + nomeDestinatario);
             return;
         }
 
-        if (valorTransferencia > saldoAtual) {
-            System.out.println("Você não possui saldo disponível para esta transferência no valor de " + valorTransferencia);
+        if (valorTransferencia.compareTo(saldoAtual) > 0) {
+            System.out.println(
+                    "Você não possui saldo disponível para esta transferência no valor de R$" +
+                    valorTransferencia
+            );
             this.consultarSaldo(nome);
             return;
         }
@@ -83,33 +87,34 @@ public class ContaBancaria {
         this.consultarSaldo(nome);
     }
 
-    private double buscarSaldoAtual(String nome) {
-        double saldoAtual = 0;
+    private BigDecimal buscarSaldoAtual(String nome) {
+        BigDecimal saldoAtual = BigDecimal.valueOf(0);
         for (Conta conta : contasExistentes) {
-            if (conta != null && conta.nome.equals(nome)) {
+            if (conta.nome.equals(nome)) {
                 saldoAtual = conta.saldoAtual;
             }
         }
         return saldoAtual;
     }
     public void consultarSaldo(String nome) {
-        double saldoAtual = this.buscarSaldoAtual(nome);
+        BigDecimal saldoAtual = this.buscarSaldoAtual(nome);
         System.out.println("Saldo atual de " + nome + " é: R$" + saldoAtual);
     }
 
     public void criarConta(String nome) {
-        boolean possuiConta = this.possuiContaComNome(nome);
+        boolean possuiConta = this.ehCliente(nome);
         if (possuiConta) {
-            System.out.println("Você já possuí conta, não podemos criar uma nova conta!");
+            System.out.println(nome + " você já possuí conta, não podemos criar uma nova conta!");
             return;
         }
+
         Conta conta = new Conta();
         conta.nome = nome;
         contasExistentes.add(conta);
         System.out.println("Sua nova conta em nome de " + nome + " foi criada com sucesso!");
     }
 
-    private boolean possuiContaComNome(String nome) {
+    private boolean ehCliente(String nome) {
         for (Conta conta : contasExistentes) {
             if (conta.nome.equals(nome)) {
                 return true;
@@ -119,7 +124,7 @@ public class ContaBancaria {
     }
 
     public void verificarPossiuConta(String nome) {
-        boolean possuiConta = this.possuiContaComNome(nome);
+        boolean possuiConta = this.ehCliente(nome);
 
         if (possuiConta) {
             System.out.println("Ficamos felizes em informar que você " + nome + " já possui uma conta conosco.");

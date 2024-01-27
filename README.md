@@ -1,6 +1,9 @@
-![image](https://github.com/pamelasenai/ambientacao-exercicio/assets/157407208/0e2274c0-d7c9-47e8-b337-9590f2fb998e)
+![logo.png](logo.png)
 
 # Exercícios da Semana de Ambientação
+
+---
+> Para executar todos os exercícios rode a aplicação Main.
 
 ## 📖 [M1S02] Ex 1 - Calculadora Simples:
 1. Crie uma classe Calculadora que irá conter todos os métodos a seguir.

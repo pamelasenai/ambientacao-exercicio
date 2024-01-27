@@ -1,4 +1,6 @@
+import java.math.BigDecimal;
+
 public class Conta {
-    public double saldoAtual = 0;
+    public BigDecimal saldoAtual = BigDecimal.valueOf(0);
     public String nome;
 }
